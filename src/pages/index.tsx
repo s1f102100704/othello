@@ -18,10 +18,18 @@ const Home = () => {
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board);
     newBoard[y][x] = turnColor;
-    if (turnColor === 1) {
-      setTurncolor(2);
-    } else {
-      setTurncolor(1);
+    setTurncolor(turnColor === 1 ? 2 : 1);
+    if (newBoard[y - 1][x] === 3 - turnColor) {
+      newBoard[y][x] = turnColor;
+    }
+    if (newBoard[y + 1][x] === 3 - turnColor) {
+      newBoard[y][x] = turnColor;
+    }
+    if (newBoard[y][x - 1] === 3 - turnColor) {
+      newBoard[y][x] = turnColor;
+    }
+    if (newBoard[y][x + 1] === 3 - turnColor) {
+      newBoard[y][x] = turnColor;
     }
     setBoard(newBoard);
     console.log(x, y);
