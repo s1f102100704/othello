@@ -27,3 +27,5 @@ Next.jsの詳細については、以下のリソースをご覧ください：
 
 ## Github Pagesへのデプロイ
 Github上のSettings -> Pages内のSourceをGitHub Actionsに切り替えるとWebページがデプロイされます。
+
+須江一矢
