@@ -6,11 +6,11 @@ import { useState } from 'react';
 const Home = () => {
   const [turnColor, setTurncolor] = useState(1);
   const [board, setBoard] = useState([
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [2, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 1, 2, 0, 0, 2],
-    [0, 0, 0, 2, 1, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -21,16 +21,55 @@ const Home = () => {
     setTurncolor(turnColor === 1 ? 2 : 1);
 
     // ひっくり返す処理
-
+    //上方向
     for (let n = 2, i = 1, z = 1000; y - n >= 0 && z > 100; n++, i++) {
       if (newBoard[y - n][x] === turnColor) {
-        console.log('a');
+        console.log(y - n, ':', x);
+        //上方向のすべての座標の色を判定する
         for (let p = 1; p < n; p++) {
           console.log('b:', n);
           newBoard[y - n + p][x] = turnColor;
           //すべてひっくり返さないようにする
           if (newBoard[y - n + i][x] === turnColor) {
-            console.log('break');
+            z = 0;
+            break;
+          }
+        }
+      }
+    }
+    //下方向
+    for (let n = 2, i = 1, z = 1000; y + n <= 7 && z > 100; n++, i++) {
+      if (newBoard[y + n][x] === turnColor) {
+        console.log('aa');
+        for (let p = 1; p < n; p++) {
+          newBoard[y + n - p][x] = turnColor;
+          if (newBoard[y + n - i][x] === turnColor) {
+            z = 0;
+            break;
+          }
+        }
+      }
+    }
+    //左方向
+    for (let n = 2, i = 1, z = 1000; x - n >= 0 && z > 100; n++, i++) {
+      if (newBoard[y][x - n] === turnColor) {
+        console.log('aa');
+        for (let p = 1; p < n; p++) {
+          newBoard[y][x - n + p] = turnColor;
+          if (newBoard[y][x - n + i] === turnColor) {
+            z = 0;
+            break;
+          }
+        }
+      }
+    }
+    //右方向
+    for (let n = 2, i = 1, z = 1000; x + n <= 7 && z > 100; n++, i++) {
+      if (newBoard[y][x + n] === turnColor) {
+        console.log('aa');
+        for (let p = 1; p < n; p++) {
+          newBoard[y][x + n - p] = turnColor;
+          if (newBoard[y][x + n - i] === turnColor) {
             z = 0;
             break;
           }
