@@ -94,7 +94,11 @@ const Home = () => {
     }
     //右斜め上方向
     for (let n = 2, i = 1, z = 1000; y - n >= 0 && x + n <= 7 && z > 100; n++, i++) {
-      if (newBoard[y - n][x + n] === turnColor && newBoard[y - 1][x + 1] !== 0) {
+      if (
+        newBoard[y - n][x + n] === turnColor &&
+        newBoard[y - 1][x + 1] !== 0 &&
+        newBoard[y - 1][x + 1] !== turnColor
+      ) {
         //上方向のすべての座標の色を判定する
         for (let p = 1; p < n; p++) {
           newBoard[y - n + p][x + n - p] = turnColor;
@@ -108,8 +112,11 @@ const Home = () => {
     }
     //右斜め下方向
     for (let n = 2, i = 1, z = 1000; y + n <= 7 && x + n <= 7 && z > 100; n++, i++) {
-      if (newBoard[y + n][x + n] === turnColor && newBoard[y + 1][x + 1] !== 0) {
-        //上方向のすべての座標の色を判定する
+      if (
+        newBoard[y + n][x + n] === turnColor &&
+        newBoard[y + 1][x + 1] !== 0 &&
+        newBoard[y + 1][x + 1] !== turnColor
+      ) {
         for (let p = 1; p < n; p++) {
           newBoard[y + n - p][x + n - p] = turnColor;
           //すべてひっくり返さないようにする
@@ -122,8 +129,11 @@ const Home = () => {
     }
     //左斜め上方向
     for (let n = 2, i = 1, z = 1000; y - n >= 0 && x - n >= 0 && z > 100; n++, i++) {
-      if (newBoard[y - n][x - n] === turnColor && newBoard[y - 1][x - 1] !== 0) {
-        //上方向のすべての座標の色を判定する
+      if (
+        newBoard[y - n][x - n] === turnColor &&
+        newBoard[y - 1][x - 1] !== 0 &&
+        newBoard[y - 1][x - 1] !== turnColor
+      ) {
         for (let p = 1; p < n; p++) {
           newBoard[y - n + p][x - n + p] = turnColor;
           //すべてひっくり返さないようにする
@@ -135,13 +145,16 @@ const Home = () => {
       }
     }
     //左斜め下方向
-    for (let n = 2, i = 1, z = 1000; y - n >= 0 && x + n <= 7 && z > 100; n++, i++) {
-      if (newBoard[y - n][x + n] === turnColor && newBoard[y - 1][x + 1] !== 0) {
-        //上方向のすべての座標の色を判定する
+    for (let n = 2, i = 1, z = 1000; y + n <= 7 && x - n >= 0 && z > 100; n++, i++) {
+      if (
+        newBoard[y + n][x - n] === turnColor &&
+        newBoard[y + 1][x - 1] !== 0 &&
+        newBoard[y + 1][x - 1] !== turnColor
+      ) {
         for (let p = 1; p < n; p++) {
-          newBoard[y - n + p][x + n - p] = turnColor;
+          newBoard[y + n - p][x - n + p] = turnColor;
           //すべてひっくり返さないようにする
-          if (newBoard[y - n + i][x + n + i] === turnColor) {
+          if (newBoard[y + n - i][x - n + i] === turnColor) {
             z = 0;
             break;
           }
