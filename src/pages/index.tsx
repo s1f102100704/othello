@@ -15,10 +15,10 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+  //候補地の処理
+
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board);
-    newBoard[y][x] = turnColor;
-    setTurncolor(turnColor === 1 ? 2 : 1);
 
     // 上下左右ひっくり返す処理
     //上方向
@@ -26,9 +26,11 @@ const Home = () => {
       if (
         newBoard[y - n][x] === turnColor &&
         newBoard[y - 1][x] !== 0 &&
-        newBoard[y - 1][x] !== turnColor
+        newBoard[y - 1][x] !== turnColor &&
+        board[y][x] === 0 //重ねおき禁止
       ) {
-        console.log(y - n, ':', x);
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
         //上方向のすべての座標の色を判定する
         for (let p = 1; p < n; p++) {
           newBoard[y - n + p][x] = turnColor;
@@ -45,9 +47,11 @@ const Home = () => {
       if (
         newBoard[y + n][x] === turnColor &&
         newBoard[y + 1][x] !== 0 &&
-        newBoard[y + 1][x] !== turnColor
+        newBoard[y + 1][x] !== turnColor &&
+        board[y][x] === 0
       ) {
-        console.log('aa');
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
         for (let p = 1; p < n; p++) {
           newBoard[y + n - p][x] = turnColor;
           if (newBoard[y + n - i][x] === turnColor) {
@@ -61,12 +65,12 @@ const Home = () => {
     for (let n = 2, i = 1, z = 1000; x - n >= 0 && z > 100; n++, i++) {
       if (
         newBoard[y][x - n] === turnColor &&
-        newBoard[y][x - n + 1] !== 0 &&
-        newBoard[y][x - 1] !== turnColor
+        newBoard[y][x - 1] !== 0 &&
+        newBoard[y][x - 1] !== turnColor &&
+        board[y][x] === 0
       ) {
-        console.log('turncolor is :', turnColor);
-        console.log(newBoard[y][x - n], 'x-2 =:', x - 2);
-
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
         for (let p = 1; p < n; p++) {
           newBoard[y][x - n + p] = turnColor;
           if (newBoard[y][x - n + i] === turnColor) {
@@ -81,8 +85,11 @@ const Home = () => {
       if (
         newBoard[y][x + n] === turnColor &&
         newBoard[y][x + 1] !== 0 &&
-        newBoard[y][x + 1] !== turnColor
+        newBoard[y][x + 1] !== turnColor &&
+        board[y][x] === 0 //重ねお禁止
       ) {
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
         for (let p = 1; p < n; p++) {
           newBoard[y][x + n - p] = turnColor;
           if (newBoard[y][x + n - i] === turnColor) {
@@ -97,12 +104,14 @@ const Home = () => {
       if (
         newBoard[y - n][x + n] === turnColor &&
         newBoard[y - 1][x + 1] !== 0 &&
-        newBoard[y - 1][x + 1] !== turnColor
+        newBoard[y - 1][x + 1] !== turnColor &&
+        board[y][x] === 0 //重ねお禁止
       ) {
-        //上方向のすべての座標の色を判定する
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
+
         for (let p = 1; p < n; p++) {
           newBoard[y - n + p][x + n - p] = turnColor;
-          //すべてひっくり返さないようにする
           if (newBoard[y - n + i][x + n - i] === turnColor) {
             z = 0;
             break;
@@ -115,11 +124,14 @@ const Home = () => {
       if (
         newBoard[y + n][x + n] === turnColor &&
         newBoard[y + 1][x + 1] !== 0 &&
-        newBoard[y + 1][x + 1] !== turnColor
+        newBoard[y + 1][x + 1] !== turnColor &&
+        board[y][x] === 0 //重ねお禁止
       ) {
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
+
         for (let p = 1; p < n; p++) {
           newBoard[y + n - p][x + n - p] = turnColor;
-          //すべてひっくり返さないようにする
           if (newBoard[y + n - i][x + n - i] === turnColor) {
             z = 0;
             break;
@@ -132,8 +144,12 @@ const Home = () => {
       if (
         newBoard[y - n][x - n] === turnColor &&
         newBoard[y - 1][x - 1] !== 0 &&
-        newBoard[y - 1][x - 1] !== turnColor
+        newBoard[y - 1][x - 1] !== turnColor &&
+        board[y][x] === 0 //重ねお禁止
       ) {
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
+
         for (let p = 1; p < n; p++) {
           newBoard[y - n + p][x - n + p] = turnColor;
           //すべてひっくり返さないようにする
@@ -149,11 +165,14 @@ const Home = () => {
       if (
         newBoard[y + n][x - n] === turnColor &&
         newBoard[y + 1][x - 1] !== 0 &&
-        newBoard[y + 1][x - 1] !== turnColor
+        newBoard[y + 1][x - 1] !== turnColor &&
+        board[y][x] === 0 //重ねお禁止
       ) {
+        newBoard[y][x] = turnColor;
+        setTurncolor(turnColor === 1 ? 2 : 1);
+
         for (let p = 1; p < n; p++) {
           newBoard[y + n - p][x - n + p] = turnColor;
-          //すべてひっくり返さないようにする
           if (newBoard[y + n - i][x - n + i] === turnColor) {
             z = 0;
             break;
@@ -163,7 +182,25 @@ const Home = () => {
     }
 
     setBoard(newBoard);
-    // console.log(x, y);
+    func();
+  };
+  const func = () => {
+    //read board
+    const newBoard = structuredClone(board);
+    let number = 0;
+    for (let i = 0; i <= 8; i++) {
+      for (let n = 0; n <= 8; n++) {
+        number = newBoard[i][n];
+        if (number === 0) {
+          for (let n = 2, i = 1, z = 1000; y - n >= 0 && z > 100; n++, i++) {
+            if (
+              newBoard[y - n][x] === turnColor &&
+              newBoard[y - 1][x] !== 0 &&
+              newBoard[y - 1][x] !== turnColor &&
+            )
+        }
+      }
+    }
   };
 
   return (
