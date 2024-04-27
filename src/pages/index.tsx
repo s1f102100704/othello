@@ -8,10 +8,10 @@ const Home = () => {
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 2, 0, 0, 0],
-    [0, 0, 0, 2, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 3, 0, 0, 0],
+    [0, 0, 0, 1, 2, 3, 0, 0],
+    [0, 0, 3, 2, 1, 0, 0, 0],
+    [0, 0, 0, 3, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
@@ -23,12 +23,7 @@ const Home = () => {
     // 上下左右ひっくり返す処理
     //上方向
     for (let n = 2, i = 1, z = 1000; y - n >= 0 && z > 100; n++, i++) {
-      if (
-        newBoard[y - n][x] === turnColor &&
-        newBoard[y - 1][x] !== 0 &&
-        newBoard[y - 1][x] !== turnColor &&
-        board[y][x] === 0 //重ねおき禁止
-      ) {
+      if (newBoard[y][x] === 3) {
         newBoard[y][x] = turnColor;
         setTurncolor(turnColor === 1 ? 2 : 1);
         //上方向のすべての座標の色を判定する
@@ -181,28 +176,50 @@ const Home = () => {
       }
     }
 
+    //候補地のリセット
+    for (let p = 0; p <= 7; p++) {
+      //y軸
+      for (let q = 0; q <= 7; q++) {
+        // x軸;
+        if (newBoard[p][q] === 3) {
+          newBoard[p][q] = 0;
+        }
+      }
+    }
+
     setBoard(newBoard);
-    func();
+    blue(newBoard, turnColor);
   };
-  const func = () => {
+  const blue = (newBoard: number[][], turnColor: number) => {
     //read board
-    const newBoard = structuredClone(board);
     let number = 0;
-    for (let i = 0; i <= 8; i++) {
-      for (let n = 0; n <= 8; n++) {
-        number = newBoard[i][n];
+    const turn = turnColor === 1 ? 2 : 1;
+    for (let p = 0; p <= 7; p++) {
+      //y軸
+      for (let q = 0; q <= 7; q++) {
+        //x軸
+        number = newBoard[p][q];
         if (number === 0) {
-          for (let n = 2, i = 1, z = 1000; y - n >= 0 && z > 100; n++, i++) {
+          for (let n = 2, i = 1, z = 1000; p - n >= 0 && z > 100; n++, i++) {
             if (
-              newBoard[y - n][x] === turnColor &&
-              newBoard[y - 1][x] !== 0 &&
-              newBoard[y - 1][x] !== turnColor &&
-            )
+              newBoard[p - n][q] === turn &&
+              newBoard[p - 1][q] !== 0 &&
+              newBoard[p - 1][q] !== 3 &&
+              newBoard[p - 1][q] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p - n + j][q] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
         }
       }
     }
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.boardstyle}>
@@ -210,12 +227,14 @@ const Home = () => {
         {board.map((row, y) =>
           row.map((color, x) => (
             <div className={styles.cellstyle} key={`${x}-${y}`} onClick={() => clickHandler(x, y)}>
-              {color !== 0 && (
+              {color !== 0 && color !== 3 && (
                 <div
                   className={styles.stonestyle}
                   style={{ background: color === 1 ? '#000' : '#fff' }}
                 />
               )}
+              {color === 3 && <div className={styles.stonestyle} style={{ background: 'blue' }} />}
+              {color === 0 && <div className={styles.stonestyle} style={{ background: 'green' }} />}
             </div>
           )),
         )}
