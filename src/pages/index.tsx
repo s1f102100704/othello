@@ -18,187 +18,173 @@ const Home = () => {
   //候補地の処理
 
   const clickHandler = (x: number, y: number) => {
-    const newBoard = structuredClone(board);
-    console.log(turnColor);
-    // 上下左右ひっくり返す処理
+    const newBoard = structuredClone(board); // 上下左右ひっくり返す処理
     //上方向
-    for (let n = 2, i = 1, z = 1000; y - n >= 0 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y - n][x] === turnColor &&
-        newBoard[y - 1][x] !== 0 &&
-        newBoard[y - 1][x] !== turnColor
-      ) {
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-        //上方向のすべての座標の色を判定する
-        for (let p = 1; p < n; p++) {
-          newBoard[y - n + p][x] = turnColor;
-          //すべてひっくり返さないようにする
-          if (newBoard[y - n + i][x] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //下方向
-    for (let n = 2, i = 1, z = 1000; y + n <= 7 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y + n][x] === turnColor &&
-        newBoard[y + 1][x] !== 0 &&
-        newBoard[y + 1][x] !== turnColor
-      ) {
-        console.log('2');
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-        for (let p = 1; p < n; p++) {
-          console.log('3');
-          newBoard[y + n - p][x] = turnColor;
-          if (newBoard[y + n - i][x] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //左方向
-    for (let n = 2, i = 1, z = 1000; x - n >= 0 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y][x - n] === turnColor &&
-        newBoard[y][x - 1] !== 0 &&
-        newBoard[y][x - 1] !== turnColor
-      ) {
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-        for (let p = 1; p < n; p++) {
-          newBoard[y][x - n + p] = turnColor;
-          if (newBoard[y][x - n + i] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //右方向
-    for (let n = 2, i = 1, z = 1000; x + n <= 7 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y][x + n] === turnColor &&
-        newBoard[y][x + 1] !== 0 &&
-        newBoard[y][x + 1] !== turnColor
-      ) {
-        console.log('a');
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-        for (let p = 1; p < n; p++) {
-          newBoard[y][x + n - p] = turnColor;
-          if (newBoard[y][x + n - i] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //右斜め上方向
-    for (let n = 2, i = 1, z = 1000; y - n >= 0 && x + n <= 7 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y - n][x + n] === turnColor &&
-        newBoard[y - 1][x + 1] !== 0 &&
-        newBoard[y - 1][x + 1] !== turnColor
-      ) {
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-
-        for (let p = 1; p < n; p++) {
-          newBoard[y - n + p][x + n - p] = turnColor;
-          if (newBoard[y - n + i][x + n - i] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //右斜め下方向
-    for (let n = 2, i = 1, z = 1000; y + n <= 7 && x + n <= 7 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y + n][x + n] === turnColor &&
-        newBoard[y + 1][x + 1] !== 0 &&
-        newBoard[y + 1][x + 1] !== turnColor
-      ) {
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-
-        for (let p = 1; p < n; p++) {
-          newBoard[y + n - p][x + n - p] = turnColor;
-          if (newBoard[y + n - i][x + n - i] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //左斜め上方向
-    for (let n = 2, i = 1, z = 1000; y - n >= 0 && x - n >= 0 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y - n][x - n] === turnColor &&
-        newBoard[y - 1][x - 1] !== 0 &&
-        newBoard[y - 1][x - 1] !== turnColor
-      ) {
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-
-        for (let p = 1; p < n; p++) {
-          newBoard[y - n + p][x - n + p] = turnColor;
-          //すべてひっくり返さないようにする
-          if (newBoard[y - n + i][x - n + i] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-    //左斜め下方向
-    for (let n = 2, i = 1, z = 1000; y + n <= 7 && x - n >= 0 && z > 100; n++, i++) {
-      if (
-        newBoard[y][x] === 3 &&
-        newBoard[y + n][x - n] === turnColor &&
-        newBoard[y + 1][x - 1] !== 0 &&
-        newBoard[y + 1][x - 1] !== turnColor
-      ) {
-        newBoard[y][x] = turnColor;
-        setTurncolor(turnColor === 1 ? 2 : 1);
-
-        for (let p = 1; p < n; p++) {
-          newBoard[y + n - p][x - n + p] = turnColor;
-          if (newBoard[y + n - i][x - n + i] === turnColor) {
-            z = 0;
-            break;
-          }
-        }
-      }
-    }
-
-    //候補地のリセット
-    for (let p = 0; p <= 7; p++) {
-      //y軸
-      for (let q = 0; q <= 7; q++) {
-        // x軸;
-        if (newBoard[p][q] === 3) {
-          newBoard[p][q] = 0;
-        }
-      }
-    }
-
-    setBoard(newBoard);
     if (newBoard[y][x] === 3) {
+      for (let n = 2, i = 1, z = 1000; y - n >= 0 && z > 100; n++, i++) {
+        if (
+          newBoard[y - n][x] === turnColor &&
+          newBoard[y - 1][x] !== 0 &&
+          newBoard[y - 1][x] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+          //上方向のすべての座標の色を判定する
+          for (let p = 1; p < n; p++) {
+            newBoard[y - n + p][x] = turnColor;
+            //すべてひっくり返さないようにする
+            if (newBoard[y - n + i][x] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //下方向
+      for (let n = 2, i = 1, z = 1000; y + n <= 7 && z > 100; n++, i++) {
+        if (
+          newBoard[y + n][x] === turnColor &&
+          newBoard[y + 1][x] !== 0 &&
+          newBoard[y + 1][x] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+          for (let p = 1; p < n; p++) {
+            newBoard[y + n - p][x] = turnColor;
+            if (newBoard[y + n - i][x] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //左方向
+      for (let n = 2, i = 1, z = 1000; x - n >= 0 && z > 100; n++, i++) {
+        if (
+          newBoard[y][x - n] === turnColor &&
+          newBoard[y][x - 1] !== 0 &&
+          newBoard[y][x - 1] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+          for (let p = 1; p < n; p++) {
+            newBoard[y][x - n + p] = turnColor;
+            if (newBoard[y][x - n + i] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //右方向
+      for (let n = 2, i = 1, z = 1000; x + n <= 7 && z > 100; n++, i++) {
+        if (
+          newBoard[y][x + n] === turnColor &&
+          newBoard[y][x + 1] !== 0 &&
+          newBoard[y][x + 1] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+          for (let p = 1; p < n; p++) {
+            newBoard[y][x + n - p] = turnColor;
+            if (newBoard[y][x + n - i] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //右斜め上方向
+      for (let n = 2, i = 1, z = 1000; y - n >= 0 && x + n <= 7 && z > 100; n++, i++) {
+        if (
+          newBoard[y - n][x + n] === turnColor &&
+          newBoard[y - 1][x + 1] !== 0 &&
+          newBoard[y - 1][x + 1] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+
+          for (let p = 1; p < n; p++) {
+            newBoard[y - n + p][x + n - p] = turnColor;
+            if (newBoard[y - n + i][x + n - i] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //右斜め下方向
+      for (let n = 2, i = 1, z = 1000; y + n <= 7 && x + n <= 7 && z > 100; n++, i++) {
+        if (
+          newBoard[y + n][x + n] === turnColor &&
+          newBoard[y + 1][x + 1] !== 0 &&
+          newBoard[y + 1][x + 1] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+
+          for (let p = 1; p < n; p++) {
+            newBoard[y + n - p][x + n - p] = turnColor;
+            if (newBoard[y + n - i][x + n - i] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //左斜め上方向
+      for (let n = 2, i = 1, z = 1000; y - n >= 0 && x - n >= 0 && z > 100; n++, i++) {
+        if (
+          newBoard[y - n][x - n] === turnColor &&
+          newBoard[y - 1][x - 1] !== 0 &&
+          newBoard[y - 1][x - 1] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+
+          for (let p = 1; p < n; p++) {
+            newBoard[y - n + p][x - n + p] = turnColor;
+            //すべてひっくり返さないようにする
+            if (newBoard[y - n + i][x - n + i] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+      //左斜め下方向
+      for (let n = 2, i = 1, z = 1000; y + n <= 7 && x - n >= 0 && z > 100; n++, i++) {
+        if (
+          newBoard[y + n][x - n] === turnColor &&
+          newBoard[y + 1][x - 1] !== 0 &&
+          newBoard[y + 1][x - 1] !== turnColor
+        ) {
+          newBoard[y][x] = turnColor;
+          setTurncolor(turnColor === 1 ? 2 : 1);
+
+          for (let p = 1; p < n; p++) {
+            newBoard[y + n - p][x - n + p] = turnColor;
+            if (newBoard[y + n - i][x - n + i] === turnColor) {
+              z = 0;
+              break;
+            }
+          }
+        }
+      }
+
+      //候補地のリセット
+      for (let p = 0; p <= 7; p++) {
+        //y軸
+        for (let q = 0; q <= 7; q++) {
+          // x軸;
+          if (newBoard[p][q] === 3) {
+            newBoard[p][q] = 0;
+          }
+        }
+      }
+
+      setBoard(newBoard);
       blue(newBoard, turnColor);
-      console.log('成功');
     }
   };
   const blue = (newBoard: number[][], turnColor: number) => {
@@ -219,7 +205,8 @@ const Home = () => {
               newBoard[p - 1][q] !== 3 &&
               newBoard[p - 1][q] !== turn
             ) {
-              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              newBoard[p][q] = 3;
+              console.log(p, q); //座標p,qの値を3に変更
               for (let j = 1; j < n; j++) {
                 if (newBoard[p - n + j][q] === turn) {
                   z = 0;
@@ -246,110 +233,111 @@ const Home = () => {
             }
           }
           //左方向
-          // for (let n = 2, i = 1, z = 1000; p - n >= 0 && z > 100; n++, i++) {
-          //   if (
-          //     newBoard[p][q - n] === turn &&
-          //     newBoard[p][q - 1] !== 0 &&
-          //     newBoard[p][q - 1] !== 3 &&
-          //     newBoard[p][q - 1] !== turn
-          //   ) {
-          //     newBoard[p][q] = 3; //座標p,qの値を3に変更
-          //     for (let j = 1; j < n; j++) {
-          //       if (newBoard[p][q - n + j] === turn) {
-          //         z = 0;
-          //         break;
-          //       }
-          //     }
-          //   }
-          // }
-          //右方向
-          // for (let n = 2, i = 1, z = 1000; p + n >= 0 && z > 100; n++, i++) {
-          //   if (
-          //     newBoard[p][q + n] === turn &&
-          //     newBoard[p][q + 1] !== 0 &&
-          //     newBoard[p][q + 1] !== 3 &&
-          //     newBoard[p][q + 1] !== turn
-          //   ) {
-          //     newBoard[p][q] = 3; //座標p,qの値を3に変更
-          //     for (let j = 1; j < n; j++) {
-          //       if (newBoard[p][q + n - j] === turn) {
-          //         z = 0;
-          //         break;
-          //       }
-          //     }
-          //   }
-          // }
-          // //右斜め上方向
-          // for (let n = 2, i = 1, z = 1000; p - n >= 0 && q + n <= 7 && z > 100; n++, i++) {
-          //   if (
-          //     newBoard[p - n][q + n] === turn &&
-          //     newBoard[p - 1][q + 1] !== 0 &&
-          //     newBoard[p - 1][q + 1] !== 3 &&
-          //     newBoard[p - 1][q + 1] !== turn
-          //   ) {
-          //     newBoard[p][q] = 3; //座標p,qの値を3に変更
-          //     for (let j = 1; j < n; j++) {
-          //       if (newBoard[p - n + j][q + n - j] === turn) {
-          //         z = 0;
-          //         break;
-          //       }
-          //     }
-          //   }
-          // }
-          // //右斜め下方向
-          // for (let n = 2, i = 1, z = 1000; p + n <= 7 && q + n <= 7 && z > 100; n++, i++) {
-          //   if (
-          //     newBoard[p + n][q + n] === turn &&
-          //     newBoard[p + 1][q + 1] !== 0 &&
-          //     newBoard[p + 1][q + 1] !== 3 &&
-          //     newBoard[p + 1][q + 1] !== turn
-          //   ) {
-          //     newBoard[p][q] = 3; //座標p,qの値を3に変更
-          //     for (let j = 1; j < n; j++) {
-          //       if (newBoard[p + n - j][q + n - j] === turn) {
-          //         z = 0;
-          //         break;
-          //       }
-          //     }
-          //   }
-          // }
-          // //左斜め上方向
-          // for (let n = 2, i = 1, z = 1000; p - n >= 0 && q - n >= 0 && z > 100; n++, i++) {
-          //   if (
-          //     newBoard[p - n][q - n] === turn &&
-          //     newBoard[p - 1][q - 1] !== 0 &&
-          //     newBoard[p - 1][q - 1] !== 3 &&
-          //     newBoard[p - 1][q - 1] !== turn
-          //   ) {
-          //     newBoard[p][q] = 3; //座標p,qの値を3に変更
-          //     for (let j = 1; j < n; j++) {
-          //       if (newBoard[p - n + j][q - n + j] === turn) {
-          //         z = 0;
-          //         break;
-          //       }
-          //     }
-          //   }
-          // }
-          // //左斜め下方向
-          // for (let n = 2, i = 1, z = 1000; p + n <= 7 && q - n >= 0 && z > 100; n++, i++) {
-          //   if (
-          //     newBoard[p + n][q - n] === turn &&
-          //     newBoard[p + 1][q - 1] !== 0 &&
-          //     newBoard[p + 1][q - 1] !== 3 &&
-          //     newBoard[p + 1][q - 1] !== turn
-          //   ) {
-          //     newBoard[p][q] = 3; //座標p,qの値を3に変更
-          //     for (let j = 1; j < n; j++) {
-          //       if (newBoard[p + n - j][q - n + j] === turn) {
-          //         z = 0;
-          //         break;
-          //       }
-          //     }
-          //   }
-          // }
+          for (let n = 2, i = 1, z = 1000; q - n >= 0 && z > 100; n++, i++) {
+            if (
+              newBoard[p][q - n] === turn &&
+              newBoard[p][q - 1] !== 0 &&
+              newBoard[p][q - 1] !== 3 &&
+              newBoard[p][q - 1] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p][q - n + j] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
+          //右方向;
+          for (let n = 2, i = 1, z = 1000; q + n <= 7 && z > 100; n++, i++) {
+            if (
+              newBoard[p][q + n] === turn &&
+              newBoard[p][q + 1] !== 0 &&
+              newBoard[p][q + 1] !== 3 &&
+              newBoard[p][q + 1] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p][q + n - j] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
+          //右斜め上方向
+          for (let n = 2, i = 1, z = 1000; p - n >= 0 && q + n <= 7 && z > 100; n++, i++) {
+            if (
+              newBoard[p - n][q + n] === turn &&
+              newBoard[p - 1][q + 1] !== 0 &&
+              newBoard[p - 1][q + 1] !== 3 &&
+              newBoard[p - 1][q + 1] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p - n + j][q + n - j] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
+          //右斜め下方向
+          for (let n = 2, i = 1, z = 1000; p + n <= 7 && q + n <= 7 && z > 100; n++, i++) {
+            if (
+              newBoard[p + n][q + n] === turn &&
+              newBoard[p + 1][q + 1] !== 0 &&
+              newBoard[p + 1][q + 1] !== 3 &&
+              newBoard[p + 1][q + 1] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p + n - j][q + n - j] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
+          //左斜め上方向
+          for (let n = 2, i = 1, z = 1000; p - n >= 0 && q - n >= 0 && z > 100; n++, i++) {
+            if (
+              newBoard[p - n][q - n] === turn &&
+              newBoard[p - 1][q - 1] !== 0 &&
+              newBoard[p - 1][q - 1] !== 3 &&
+              newBoard[p - 1][q - 1] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p - n + j][q - n + j] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
+          //左斜め下方向
+          for (let n = 2, i = 1, z = 1000; p + n <= 7 && q - n >= 0 && z > 100; n++, i++) {
+            if (
+              newBoard[p + n][q - n] === turn &&
+              newBoard[p + 1][q - 1] !== 0 &&
+              newBoard[p + 1][q - 1] !== 3 &&
+              newBoard[p + 1][q - 1] !== turn
+            ) {
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
+              for (let j = 1; j < n; j++) {
+                if (newBoard[p + n - j][q - n + j] === turn) {
+                  z = 0;
+                  break;
+                }
+              }
+            }
+          }
         }
       }
     }
+    setBoard(newBoard);
   };
   return (
     <div className={styles.container}>
