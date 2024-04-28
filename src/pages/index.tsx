@@ -382,7 +382,12 @@ const Home = () => {
                   style={{ background: color === 1 ? '#000' : '#fff' }}
                 />
               )}
-              {color === 3 && <div className={styles.stonestyle} style={{ background: 'blue' }} />}
+              {color === 3 && (
+                <div
+                  className={styles.stonestyle}
+                  style={{ background: 'orange', width: 20, height: 20 }}
+                />
+              )}
               {color === 0 && <div className={styles.stonestyle} style={{ background: 'green' }} />}
             </div>
           )),
