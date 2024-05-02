@@ -419,8 +419,8 @@ const Home = () => {
         }
       }
       orange(newBoard, turn);
+      setTurncolor(turn === 1 ? 2 : 1);
     }
-    setTurncolor(turn === 1 ? 2 : 1);
   };
   return (
     <div className={styles.container}>
