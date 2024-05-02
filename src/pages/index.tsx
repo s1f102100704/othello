@@ -6,18 +6,20 @@ import { useState } from 'react';
 const Home = () => {
   const [turnColor, setTurncolor] = useState(1);
   const [board, setBoard] = useState([
+    [1, 2, 3, 0, 0, 0, 0, 0],
+    [2, 2, 0, 0, 0, 0, 0, 0],
+    [3, 0, 3, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 3, 0, 0, 0],
-    [0, 0, 0, 1, 2, 3, 0, 0],
-    [0, 0, 3, 2, 1, 0, 0, 0],
-    [0, 0, 0, 3, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
-  const [blackWhite, setBlackWhite] = useState('黒');
+  const [blackWhite, setBlackWhite] = useState('黒の番です');
   const [blackPoints, setBlackPoints] = useState(2);
   const [whitePoints, setWhitePoints] = useState(2);
+
+  let pass = 0; //count pass
 
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board); // 上下左右ひっくり返す処理
@@ -33,7 +35,6 @@ const Home = () => {
           newBoard[y - 1][x] !== 3 &&
           newBoard[y - 1][x] !== turnColor
         ) {
-          console.log(newBoard[y - 1][x]);
           newBoard[y][x] = turnColor;
           setTurncolor(turnColor === 1 ? 2 : 1);
           //上方向のすべての座標の色を判定する
@@ -80,7 +81,6 @@ const Home = () => {
           newBoard[y][x - 1] !== turnColor
         ) {
           console.log('左');
-          console.log(newBoard[y][x - 1] !== 0);
           newBoard[y][x] = turnColor;
           setTurncolor(turnColor === 1 ? 2 : 1);
           for (let p = 1; p < n; p++) {
@@ -226,7 +226,7 @@ const Home = () => {
     const turn = turnColor === 1 ? 2 : 1;
     let black = 0; //黒の数
     let white = 0; //白の数
-    const site = 0; //候補地の数
+    let site = 0; //候補地の数
     for (let p = 0; p <= 7; p++) {
       //y軸
       for (let q = 0; q <= 7; q++) {
@@ -279,7 +279,6 @@ const Home = () => {
               newBoard[p][q - 1] !== 3 &&
               newBoard[p][q - 1] !== turn
             ) {
-              console.log('aaaa');
               newBoard[p][q] = 3; //座標p,qの値を3に変更
               for (let j = 1; j < n; j++) {
                 if (newBoard[p][q - n + j] === turn) {
@@ -384,26 +383,50 @@ const Home = () => {
         //ターン表示
         if (number === 1) {
           black += 1;
-        } else if (number === 2) {
+        }
+        if (number === 2) {
           white += 1;
+        }
+        if (newBoard[p][q] === 3) {
+          site += 1;
         }
       }
     }
     setBoard(newBoard);
-    if (turn === 1) {
-      setBlackWhite('黒');
-    } else {
-      setBlackWhite('白');
-    }
-
     setBlackPoints(black);
     setWhitePoints(white);
+    console.log(site);
+
+    if (turn === 1) {
+      setBlackWhite('黒の番です');
+    } else {
+      setBlackWhite('白の番です');
+    }
+    //pass時
+    if (site === 0) {
+      console.log('A');
+      pass += 1;
+      if (pass === 3) {
+        console.log('AAAA');
+        if (black > white) {
+          setBlackWhite('黒の勝ち');
+          return 0;
+        } else if (black < white) {
+          setBlackWhite('白の勝ち');
+          return 0;
+        } else {
+          return 0;
+        }
+      }
+      orange(newBoard, turn);
+    }
+    setTurncolor(turn === 1 ? 2 : 1);
   };
   return (
     <div className={styles.container}>
       <div className={styles.countstyle}>
         <a>
-          {blackWhite}の番です
+          {blackWhite}
           <br />
         </a>
         <a>黒:{blackPoints}</a>
