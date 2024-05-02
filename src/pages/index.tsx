@@ -15,21 +15,25 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
-  //候補地の処理
+  const [blackWhite, setBlackWhite] = useState('黒');
+  const [blackPoints, setBlackPoints] = useState(2);
+  const [whitePoints, setWhitePoints] = useState(2);
 
   const clickHandler = (x: number, y: number) => {
     const newBoard = structuredClone(board); // 上下左右ひっくり返す処理
-    //上方向
+
     if (newBoard[y][x] === 3) {
+      //上方向
       for (let n = 2, k = 1, i = 0, z = 1000; y - n >= 0 && z > 100; n++, k++, i++) {
         if (
           newBoard[y - n][x] === turnColor &&
           newBoard[y - n + i][x] !== 0 &&
           newBoard[y - n + i][x] !== 3 &&
           newBoard[y - 1][x] !== 0 &&
+          newBoard[y - 1][x] !== 3 &&
           newBoard[y - 1][x] !== turnColor
         ) {
-          console.log('上');
+          console.log(newBoard[y - 1][x]);
           newBoard[y][x] = turnColor;
           setTurncolor(turnColor === 1 ? 2 : 1);
           //上方向のすべての座標の色を判定する
@@ -50,6 +54,7 @@ const Home = () => {
           newBoard[y + n - i][x] !== 0 &&
           newBoard[y + n - i][x] !== 3 &&
           newBoard[y + 1][x] !== 0 &&
+          newBoard[y + 1][x] !== 3 &&
           newBoard[y + 1][x] !== turnColor
         ) {
           console.log('下');
@@ -71,9 +76,11 @@ const Home = () => {
           newBoard[y][x - n + i] !== 0 &&
           newBoard[y][x - n + i] !== 3 &&
           newBoard[y][x - 1] !== 0 &&
+          newBoard[y][x - 1] !== 3 &&
           newBoard[y][x - 1] !== turnColor
         ) {
           console.log('左');
+          console.log(newBoard[y][x - 1] !== 0);
           newBoard[y][x] = turnColor;
           setTurncolor(turnColor === 1 ? 2 : 1);
           for (let p = 1; p < n; p++) {
@@ -92,6 +99,7 @@ const Home = () => {
           newBoard[y][x + n - i] !== 0 &&
           newBoard[y][x + n - i] !== 3 &&
           newBoard[y][x + 1] !== 0 &&
+          newBoard[y][x + 1] !== 3 &&
           newBoard[y][x + 1] !== turnColor
         ) {
           console.log('右右');
@@ -113,6 +121,7 @@ const Home = () => {
           newBoard[y - n + i][x + n - i] !== 0 &&
           newBoard[y - n + i][x + n - i] !== 3 &&
           newBoard[y - 1][x + 1] !== 0 &&
+          newBoard[y - 1][x + 1] !== 3 &&
           newBoard[y - 1][x + 1] !== turnColor
         ) {
           newBoard[y][x] = turnColor;
@@ -134,6 +143,7 @@ const Home = () => {
           newBoard[y + n - i][x + n - i] !== 0 &&
           newBoard[y + n - i][x + n - i] !== 3 &&
           newBoard[y + 1][x + 1] !== 0 &&
+          newBoard[y + 1][x + 1] !== 3 &&
           newBoard[y + 1][x + 1] !== turnColor
         ) {
           newBoard[y][x] = turnColor;
@@ -155,6 +165,7 @@ const Home = () => {
           newBoard[y - n + i][x - n + i] !== 0 &&
           newBoard[y - n + i][x - n + i] !== 3 &&
           newBoard[y - 1][x - 1] !== 0 &&
+          newBoard[y - 1][x - 1] !== 3 &&
           newBoard[y - 1][x - 1] !== turnColor
         ) {
           newBoard[y][x] = turnColor;
@@ -177,6 +188,7 @@ const Home = () => {
           newBoard[y + n - i][x - n + i] !== 0 &&
           newBoard[y + n - i][x - n + i] !== 3 &&
           newBoard[y + 1][x - 1] !== 0 &&
+          newBoard[y + 1][x - 1] !== 3 &&
           newBoard[y + 1][x - 1] !== turnColor
         ) {
           newBoard[y][x] = turnColor;
@@ -204,13 +216,17 @@ const Home = () => {
       }
 
       setBoard(newBoard);
-      blue(newBoard, turnColor);
+      orange(newBoard, turnColor);
     }
   };
-  const blue = (newBoard: number[][], turnColor: number) => {
+  //候補地の処理
+  const orange = (newBoard: number[][], turnColor: number) => {
     //read board
     let number = 0;
     const turn = turnColor === 1 ? 2 : 1;
+    let black = 0; //黒の数
+    let white = 0; //白の数
+    const site = 0; //候補地の数
     for (let p = 0; p <= 7; p++) {
       //y軸
       for (let q = 0; q <= 7; q++) {
@@ -226,8 +242,7 @@ const Home = () => {
               newBoard[p - 1][q] !== 3 &&
               newBoard[p - 1][q] !== turn
             ) {
-              newBoard[p][q] = 3;
-              console.log(p, q); //座標p,qの値を3に変更
+              newBoard[p][q] = 3; //座標p,qの値を3に変更
               for (let j = 1; j < n; j++) {
                 if (newBoard[p - n + j][q] === turn) {
                   z = 0;
@@ -365,12 +380,35 @@ const Home = () => {
             }
           }
         }
+        //おける場所があるか
+        //ターン表示
+        if (number === 1) {
+          black += 1;
+        } else if (number === 2) {
+          white += 1;
+        }
       }
     }
     setBoard(newBoard);
+    if (turn === 1) {
+      setBlackWhite('黒');
+    } else {
+      setBlackWhite('白');
+    }
+
+    setBlackPoints(black);
+    setWhitePoints(white);
   };
   return (
     <div className={styles.container}>
+      <div className={styles.countstyle}>
+        <a>
+          {blackWhite}の番です
+          <br />
+        </a>
+        <a>黒:{blackPoints}</a>
+        <a>白:{whitePoints}</a>
+      </div>
       <div className={styles.boardstyle}>
         {/*for文ぽい, mapは中身を取り出す*/}
         {board.map((row, y) =>

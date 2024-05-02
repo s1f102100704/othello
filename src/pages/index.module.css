@@ -8,6 +8,16 @@
   padding: 0 0.5rem;
 }
 
+.countstyle {
+  position: absolute;
+  top: 28%;
+  left: 20px; /* 左側の余白を設定 */
+  width: 400px;
+  height: 320px;
+  border: 2px solid black;
+  transform: translateY(-50%);
+}
+
 .boardstyle {
   width: 640px;
   height: 640px;
